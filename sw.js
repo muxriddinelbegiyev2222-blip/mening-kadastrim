@@ -1,14 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1e3a8a"/>
-      <stop offset="1" stop-color="#3b82f6"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="112" fill="url(#g)"/>
-  <g fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M128 220 L256 120 L384 220 L384 392 L128 392 Z"/>
-    <path d="M208 392 L208 280 L304 280 L304 392"/>
-    <circle cx="256" cy="200" r="16" fill="#ffffff"/>
-  </g>
-</svg>
+const CACHE_NAME = 'kadastr-v3.0.0';
+const urlsToCache = ['./', './index.html', './manifest.json', './icon.svg'];
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(names => Promise.all(names.map(n => { if (n !== CACHE_NAME) return caches.delete(n); }))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request).then(res => {
+      return caches.open(CACHE_NAME).then(cache => { if (event.request.method === 'GET') cache.put(event.request, res.clone()); return res; });
+    })).catch(() => caches.match('./index.html'))
+  );
+});
