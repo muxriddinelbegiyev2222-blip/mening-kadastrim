@@ -123,8 +123,9 @@
   .doc-num { width:26px; height:26px; border-radius:50%; background:var(--primary-soft); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; margin-top:1px; }
   [data-theme="dark"] .doc-num { background:#1e293b; }
 
-  .doc-example { background:#f1f5f9; border-radius:8px; padding:8px 12px; margin-top:6px; font-size:12px; color:var(--text-soft); border-left:2px solid var(--primary-light); line-height:1.5; }
-  [data-theme="dark"] .doc-example { background:#0f172a; }
+  .doc-detail { background:#f8fafc; border-radius:8px; padding:10px 12px; margin-top:8px; font-size:12px; color:var(--text-soft); border-left:2px solid var(--primary-light); line-height:1.6; }
+  [data-theme="dark"] .doc-detail { background:#0f172a; }
+  .doc-detail strong { color:var(--primary); font-weight:600; }
 
   .grid-info { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .grid-info-item { background:#f8fafc; border-radius:var(--radius-sm); padding:14px; border:1px solid var(--border); }
@@ -293,9 +294,9 @@ const TRANSLATIONS = {
 
 /* ============ ALOQA MA'LUMOTLARI ============ */
 const CONTACTS = {
-  callCenter: { icon:"📞", label:"Call-markaz", value:"1097", href:"tel:1097", color:"blue" },
-  antiCorruption: { icon:"🛡️", label:"Korrupsiyaga qarshi kurash bo'limi", value:"+998 71-273-19-66", href:"tel:+998712731966", color:"red" },
-  telegram: { icon:"🤖", label:"Telegram bot", value:"@kadastr_komplaens_bot", href:"https://t.me/kadastr_komplaens_bot", color:"green" }
+  callCenter: { icon:"📞", label:"Kadastr agentligi call-markazi", value:"1097", href:"tel:1097", color:"blue" },
+  antiCorruption: { icon:"🛡️", label:"Korrupsiyaga qarshi kurashish bo'limi", value:"+998 71-273-19-66", href:"tel:+998712731966", color:"red" },
+  telegram: { icon:"🤖", label:"Telegram bot (komplaens)", value:"@kadastr_komplaens_bot", href:"https://t.me/kadastr_komplaens_bot", color:"green" }
 };
 
 /* ============ KATEGORIYALAR ============ */
@@ -317,14 +318,15 @@ const SERVICES = [
     forWhom:"Jismoniy va yuridik shaxslar",
     documents:[
       { name:"Kadastr hisobiga olish uchun ariza", example:"Arizada: F.I.O., pasport (JSHSHIR), obyekt manzili, kadastr raqami, huquq turi ko'rsatiladi.", source:"my.gov.uz saytidan yuklab olinadi yoki DXXM'da to'ldiriladi", order:1 },
-      { name:"Huquqni tasdiqlovchi hujjat (oldi-sotdi, meros, hadya shartnomasi)", example:"Notarial tasdiqlangan oldi-sotdi shartnomasida: tomonlar F.I.O., obyekt manzili, narxi, imzolar bo'lishi kerak.", source:"Notarial idora, sud qarori yoki tegishli davlat organi", order:2 },
-      { name:"Ko'chmas mulk obyektining texnik pasporti", example:"Texnik pasportda: obyekt nomi, manzili, maydoni, qavatlar soni, qurilgan yili ko'rsatiladi.", source:"Kadastr agentligining tuman (shahar) filiali", order:3 },
-      { name:"Yer huquqini tasdiqlovchi hujjat (agar mavjud bo'lsa)", example:"Yer uchastkasi dalolatnomasida: yer maydoni, chegaralar, maqsadli tayinlanishi ko'rsatiladi.", source:"Tuman hokimligi yoki Kadastr filiali", order:4 },
-      { name:"Shaxsni tasdiqlovchi hujjat (pasport yoki ID-karta)", example:"Pasport yoki ID-kartaning asl nusxasi va nusxasi. JSHSHIR raqami ko'rsatiladi.", source:"Fuqaro o'zi taqdim etadi", order:5 }
+      { name:"Huquqni tasdiqlovchi hujjat (oldi-sotdi shartnomasi)", example:"Notarial tasdiqlangan oldi-sotdi shartnomasida: tomonlar F.I.O., obyekt manzili, narxi, imzolar bo'lishi kerak.", source:"Notarial idorada tasdiqlanadi. Namunaviy shakl yurxizmat.adliya.uz saytida.", order:2 },
+      { name:"Meros guvohnomasi", example:"Meros qoldiruvchining F.I.O., vafot etgan sanasi, merosxo'rlar, meros mulki ro'yxati ko'rsatiladi.", source:"Meros ochilgan joydagi notarius tomonidan meros ochilgan kundan 6 oy o'tgach beriladi.", order:3 },
+      { name:"Ko'chmas mulk obyektining texnik pasporti", example:"Texnik pasportda: obyekt nomi, manzili, maydoni, qavatlar soni, qurilgan yili ko'rsatiladi.", source:"Kadastr agentligining tuman (shahar) filiali", order:4 },
+      { name:"Yer huquqini tasdiqlovchi hujjat (agar mavjud bo'lsa)", example:"Yer uchastkasi dalolatnomasida: yer maydoni, chegaralar, maqsadli tayinlanishi ko'rsatiladi.", source:"Kadastr agentligining tuman filiali yoki yer tuzish korxonasi", order:5 },
+      { name:"Shaxsni tasdiqlovchi hujjat (pasport yoki ID-karta)", example:"Pasport yoki ID-kartaning asl nusxasi va nusxasi. JSHSHIR raqami ko'rsatiladi.", source:"Fuqaro o'zi taqdim etadi", order:6 }
     ],
     where:"Davlat xizmatlari markazlari (DXXM), my.gov.uz portali, Kadastr agentligining tuman bo'limlari",
-    term:"3 ish kuni", price:"BHMning 1 baravari (davlat boji)",
-    law:"O'zbekiston Respublikasining \"Davlat kadastri to'g'risida\"gi Qonuni; VMQ 535-son (02.09.2020, oxirgi tahrir 06.01.2026)"
+    term:"2 ish kuni", price:"BHMning 1 baravari (davlat boji)",
+    law:"O'zbekiston Respublikasining \"Davlat kadastri to'g'risida\"gi Qonuni; O'RQ-803-son (28.11.2022); VMQ 535-son (02.09.2020, oxirgi tahrir 06.01.2026)"
   },
   { id:2, category:'huquq', icon:'🏘️', color:'#dcfce7',
     title:"Turar joy ko'chmas mulk obyektlariga bo'lgan huquqni ro'yxatdan o'tkazish",
@@ -332,13 +334,13 @@ const SERVICES = [
     forWhom:"Jismoniy va yuridik shaxslar",
     documents:[
       { name:"Ariza", example:"my.gov.uz orqali elektron shaklda to'ldiriladi. F.I.O., JSHSHIR, obyekt ma'lumotlari kiritiladi.", source:"my.gov.uz portali", order:1 },
-      { name:"Huquqni tasdiqlovchi hujjat", example:"Oldi-sotdi shartnomasi, hadya, meros guvohnomasi — notarial tasdiqlangan bo'lishi kerak.", source:"Notarial idora", order:2 },
+      { name:"Huquqni tasdiqlovchi hujjat", example:"Oldi-sotdi shartnomasi, hadya shartnomasi yoki meros guvohnomasi — notarial tasdiqlangan bo'lishi kerak.", source:"Notarial idora", order:2 },
       { name:"Kadastr pasporti", example:"Kadastr pasportida: kadastr raqami, obyekt turi, manzil, maydon, qiymat ko'rsatiladi.", source:"Kadastr agentligi filiali", order:3 },
       { name:"Shaxsni tasdiqlovchi hujjat", example:"Pasport yoki ID-karta ma'lumotlari (seriya, raqam, JSHSHIR).", source:"Fuqaro o'zi taqdim etadi", order:4 },
       { name:"ERI (elektron raqamli imzo) kaliti", example:"ERI kaliti orqali ariza elektron imzolanadi.", source:"Davlat xizmatlari markazi yoki ERI markazi", order:5 }
     ],
     where:"my.gov.uz portali orqali elektron", term:"3 ish kuni", price:"BHMning 1 baravari",
-    law:"VMQ 535-son (02.09.2020); \"Davlat kadastri to'g'risida\"gi Qonun"
+    law:"VMQ 535-son (02.09.2020); O'RQ-803-son (28.11.2022)"
   },
   { id:3, category:'huquq', icon:'🏢', color:'#fef3c7',
     title:"Noturar joy obyektlariga bo'lgan huquqni ro'yxatdan o'tkazish",
@@ -360,8 +362,8 @@ const SERVICES = [
     forWhom:"Jismoniy va yuridik shaxslar",
     documents:[
       { name:"Kadastr pasportini berish uchun ariza", example:"Ariza: F.I.O., JSHSHIR, obyekt manzili, kadastr raqami.", source:"DXXM yoki my.gov.uz", order:1 },
-      { name:"Huquqni tasdiqlovchi hujjat", example:"Oldi-sotdi, meros yoki hadya shartnomasi.", source:"Notarial idora", order:2 },
-      { name:"Kadastr muhandisi tomonidan tayyorlangan kadastr yig'majildi", example:"Kadastr yig'majildi: o'lchov natijalari, koordinatalar, chegaralar.", source:"Kadastr muhandisi (litsenziyalangan)", order:3 },
+      { name:"Huquqni tasdiqlovchi hujjat", example:"Oldi-sotdi, meros yoki hadya shartnomasi (notarial tasdiqlangan).", source:"Notarial idora", order:2 },
+      { name:"Kadastr muhandisi tomonidan tayyorlangan kadastr yig'majildi", example:"Kadastr yig'majildi: o'lchov natijalari, koordinatalar, chegaralar, kadastr rejasi.", source:"Kadastr muhandisi (litsenziyalangan)", order:3 },
       { name:"Texnik pasport (agar qayta tayyorlanayotgan bo'lsa)", example:"Texnik pasport: qavat rejalari, konstruksiya ma'lumotlari.", source:"Kadastr filiali", order:4 }
     ],
     where:"Kadastr agentligining tuman filiali, DXXM, my.gov.uz", term:"5 ish kuni", price:"BHMning 2 baravari",
@@ -426,12 +428,12 @@ const SERVICES = [
     forWhom:"Jismoniy va yuridik shaxslar",
     documents:[
       { name:"Ijara shartnomasi (2 nusxa)", example:"Shartnomada: tomonlar F.I.O., obyekt manzili, ijara muddati, to'lov miqdori, imzolar.", source:"Tomonlar o'zi tuzadi", order:1 },
-      { name:"Obyektga bo'lgan huquqni tasdiqlovchi hujjat", example:"Egalik hujjati.", source:"Notarial idora", order:2 },
+      { name:"Obyektga bo'lgan huquqni tasdiqlovchi hujjat", example:"Egalik hujjati (notarial tasdiqlangan).", source:"Notarial idora", order:2 },
       { name:"Tomonlarning shaxsni tasdiqlovchi hujjatlari", example:"Pasport/ID-karta nusxalari.", source:"Fuqarolar", order:3 },
       { name:"Kadastr pasporti", example:"Obyekt kadastr ma'lumotlari.", source:"Kadastr filiali", order:4 }
     ],
     where:"Kadastr agentligi tuman bo'limi, DXXM", term:"3 ish kuni", price:"BHMning 1 baravari",
-    law:"Fuqarolik Kodeksi; \"Davlat kadastri to'g'risida\"gi Qonun"
+    law:"Fuqarolik Kodeksi; VMQ 535-son"
   },
   { id:10, category:'shartnoma', icon:'🔒', color:'#fee2e2',
     title:"Garov va ipoteka shartnomalarini davlat ro'yxatidan o'tkazish",
@@ -571,12 +573,12 @@ const SERVICES = [
     forWhom:"Jismoniy va yuridik shaxslar",
     documents:[
       { name:"Ariza", example:"O'zgartirish tavsifi va sababi.", source:"my.gov.uz", order:1 },
-      { name:"Huquqni tasdiqlovchi hujjat", example:"Egalik hujjati.", source:"Notarial idora", order:2 },
-      { name:"Loyiha taklifi", example:"Yangi tashqi ko'rinish loyihasi.", source:"Loyiha tashkiloti", order:3 },
+      { name:"Huquqni tasdiqlovchi hujjat", example:"Egalik hujjati (notarial tasdiqlangan).", source:"Notarial idora", order:2 },
+      { name:"Fasadning eskiz loyihasi", example:"Kamida 30x40 sm hajmdagi qog'ozda chizilgan loyiha. Litsenziyaga ega loyiha tashkiloti tomonidan tayyorlanishi shart.", source:"Litsenziyaga ega loyiha tashkiloti", order:3 },
       { name:"Mahalla yoki tuman hokimligi xulosasi", example:"Rozilik xati.", source:"Tuman hokimligi", order:4 }
     ],
-    where:"my.gov.uz portali, Kadastr agentligi", term:"7 ish kuni", price:"BHMning 1 baravari",
-    law:"VMQ 535-son (02.09.2020)"
+    where:"my.gov.uz portali, Kadastr agentligi. Ruxsat talab qilinmaydigan holatlar: yakka tartibdagi uy-joylar (tuman ma'muriy markazi bo'lmagan joylarda) va fasadning 25% dan kam qismi o'zgartirilsa.", term:"7 ish kuni", price:"BHMning 30 foizi",
+    law:"VMQ 535-son (02.09.2020); \"Shaharsozlik to'g'risida\"gi Qonun"
   },
   { id:22, category:'litsenziya', icon:'🌾', color:'#dcfce7',
     title:"Qishloq xo'jaligiga mo'ljallanmagan yerlarni xususiylashtirish",
@@ -623,7 +625,7 @@ const SERVICES = [
     documents:[
       { name:"Ariza", example:"Obyekt manzili va qo'riqlash turi.", source:"my.gov.uz", order:1 },
       { name:"Obyektga bo'lgan huquqni tasdiqlovchi hujjat", example:"Egalik hujjati.", source:"Notarial idora", order:2 },
-      { name:"Shaxsni tasdiqlovchi hujjat", example:"Pasquiverport nusxasi.", source:"Fuqaro", order:3 }
+      { name:"Shaxsni tasdiqlovchi hujjat", example:"Pasport nusxasi.", source:"Fuqaro", order:3 }
     ],
     where:"my.gov.uz portali", term:"3 ish kuni", price:"Bepul",
     law:"VMQ 535-son"
@@ -766,7 +768,7 @@ function openModal(id) {
     <div class="info-section"><div class="info-label"><span class="info-label-icon">👥</span>Kim uchun</div><div class="info-box">${s.forWhom}</div></div>
     <div class="info-section"><div class="info-label"><span class="info-label-icon">📄</span>Kerakli hujjatlar (${s.documents.length} ta)</div>
       <ul class="doc-list">${s.documents.map((d,i) => `
-        <li><span class="doc-num">${d.order || i+1}</span><div><strong>${d.name}</strong>${d.example ? `<div class="doc-example">📝 ${d.example}</div>` : ''}${d.source ? `<div class="doc-example">📍 Qayerdan: ${d.source}</div>` : ''}</div></li>
+        <li><span class="doc-num">${d.order || i+1}</span><div><strong>${d.name}</strong>${d.example ? `<div class="doc-detail">📝 <strong>Namuna:</strong> ${d.example}</div>` : ''}${d.source ? `<div class="doc-detail">📍 <strong>Qayerdan olinadi:</strong> ${d.source}</div>` : ''}</div></li>
       `).join('')}</ul>
     </div>
     <div class="info-section"><div class="info-label"><span class="info-label-icon">📊</span>Batafsil ma'lumot</div>
