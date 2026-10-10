@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a8a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kadastr">
+<meta name="description" content="Kadastr xizmatlari va hujjatlar bo'yicha to'liq ma'lumot">
+<title>Mening Kadastrim</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --primary-light: #3b82f6;
+    --primary-soft: #eff6ff;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --text-soft: #64748b;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --shadow-sm: 0 1px 3px rgba(15,23,42,0.06);
+    --shadow-md: 0 4px 12px rgba(15,23,42,0.08);
+    --shadow-lg: 0 10px 30px rgba(15,23,42,0.12);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    padding-bottom: 90px;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  /* ============ HEADER ============ */
+  .header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 24px 20px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: "";
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-logo-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    backdrop-filter: blur(10px);
+  }
+  .header-logo-text h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header-logo-text p {
+    font-size: 12px;
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.18);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+  }
+  .header-title {
+    position: relative;
+    z-index: 2;
+    margin-top: 24px;
+  }
+  .header-title h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    line-height: 1.3;
+  }
+  .header-title p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-top: 6px;
+  }
+
+  /* ============ SEARCH ============ */
+  .search-wrap {
+    margin: -55px 16px 0;
+    position: relative;
+    z-index: 10;
+  }
+  .search-input-wrap {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 54px;
+  }
+  .search-input-wrap svg {
+    width: 20px; height: 20px;
+    stroke: var(--text-soft);
+    flex-shrink: 0;
+  }
+  .search-input-wrap input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 0 12px;
+    font-size: 15px;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+  }
+  .search-input-wrap input::placeholder { color: #94a3b8; }
+
+  /* ============ CATEGORIES ============ */
+  .categories {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 20px 16px 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .categories::-webkit-scrollbar { display: none; }
+  .category-chip {
+    flex-shrink: 0;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: white;
+    border: 1.5px solid var(--border);
+    color: var(--text-soft);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .category-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30,58,138,0.25);
+  }
+  .category-chip:active { transform: scale(0.96); }
+
+  /* ============ SECTION TITLE ============ */
+  .section-title {
+    padding: 20px 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .section-title span {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  /* ============ GRID ============ */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 16px;
+  }
+  @media (min-width: 600px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    min-height: 148px;
+  }
+  .card:active {
+    transform: scale(0.97);
+    box-shadow: var(--shadow-sm);
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, var(--accent-soft, #eff6ff) 0%, transparent 70%);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: var(--accent-soft, #eff6ff);
+    position: relative;
+    z-index: 1;
+  }
+  .card-body { flex: 1; position: relative; z-index: 1; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    letter-spacing: -0.1px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+  .card-meta-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* ============ EMPTY STATE ============ */
+  .empty {
+    text-align: center;
+    padding: 60px 30px;
+    color: var(--text-soft);
+  }
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+  .empty-text {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* ============ MODAL ============ */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.55);
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .modal.active {
+    display: flex;
+    align-items: flex-end;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    background: white;
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 24px 24px 0 0;
+    overflow-y: auto;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-overflow-scrolling: touch;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 40px; height: 4px;
+    background: #cbd5e1;
+    border-radius: 999px;
+    margin: 10px auto 0;
+  }
+
+  .modal-header {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 5;
+    border-radius: 24px 24px 0 0;
+  }
+  .modal-header-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    background: var(--accent-soft, #eff6ff);
+    flex-shrink: 0;
+  }
+  .modal-header-text { flex: 1; }
+  .modal-header-text h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    letter-spacing: -0.2px;
+  }
+  .modal-header-text p {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-top: 4px;
+  }
+  .modal-close {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: var(--text-soft);
+    font-size: 18px;
+    font-family: inherit;
+  }
+  .modal-close:active { background: #e2e8f0; }
+
+  .modal-body { padding: 20px; }
+
+  .info-section {
+    margin-bottom: 22px;
+  }
+  .info-section:last-child { margin-bottom: 0; }
+  .info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 10px;
+  }
+  .info-label-icon {
+    font-size: 15px;
+  }
+
+  .info-box {
+    background: var(--primary-soft);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.55;
+    border-left: 3px solid var(--primary-light);
+  }
+  .info-box strong { color: var(--primary); font-weight: 600; }
+
+  .doc-list {
+    list-style: none;
+  }
+  .doc-list li {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+    align-items: flex-start;
+  }
+  .doc-list li:last-child { border-bottom: none; }
+  .doc-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .grid-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .grid-info-item {
+    background: #f8fafc;
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+  .grid-info-item .label {
+    font-size: 11px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+  }
+  .grid-info-item .value {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .law-box {
+    background: #fffbeb;
+    border-left: 3px solid var(--warning);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #78350f;
+    line-height: 1.55;
+  }
+
+  /* ============ FOOTER NAV ============ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    z-index: 100;
+    box-shadow: 0 -2px 12px rgba(15,23,42,0.04);
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px;
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+  .nav-item.active { color: var(--primary); }
+  .nav-item-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  /* ============ INFO PAGE ============ */
+  .info-page {
+    display: none;
+    padding: 20px 16px;
+  }
+  .info-page.active { display: block; }
+  .info-card {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .info-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .info-card p {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  /* ============ SCROLL TOP ============ */
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #0f172a;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 2000;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div class="header-logo">
+      <div class="header-logo-icon">🏛️</div>
+      <div class="header-logo-text">
+        <h1>Mening Kadastrim</h1>
+        <p>Rasmiy ma'lumot ilovasi</p>
+      </div>
+    </div>
+    <div class="header-badge">v1.0</div>
+  </div>
+  <div class="header-title">
+    <h2>Kerakli xizmatni toping</h2>
+    <p>Qaysi hujjat kerakligini oson bilib oling</p>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-input-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Xizmat nomini yozing...">
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories" id="categories"></div>
+
+<!-- SERVICES PAGE -->
+<main id="servicesPage">
+  <div class="section-title">
+    <h3 id="sectionTitle">Barcha xizmatlar</h3>
+    <span id="servicesCount"></span>
+  </div>
+  <div class="grid" id="servicesGrid"></div>
+</main>
+
+<!-- INFO PAGE -->
+<main id="infoPage" class="info-page">
+  <div class="info-card">
+    <h3>ℹ️ Ilova haqida</h3>
+    <p>Bu ilova O‘zbekiston Respublikasi Kadastr agentligi tomonidan ko‘rsatiladigan davlat xizmatlari va ular uchun zarur bo‘lgan hujjatlar haqida to‘liq ma’lumot beradi.</p>
+  </div>
+  <div class="info-card">
+    <h3>📄 Ma'lumot manbasi</h3>
+    <p>Barcha ma’lumotlar amaldagi qonunchilik, Vazirlar Mahkamasi qarorlari va Kadastr agentligining rasmiy reglamentlari asosida tayyorlangan.</p>
+  </div>
+  <div class="info-card">
+    <h3>⚖️ Huquqiy asos</h3>
+    <p>“Davlat kadastri to‘g‘risida”gi Qonun, VMQ 389-son (22.06.2021), VMQ 535-son (02.09.2020), VMQ 3483-son (12.12.2023) va boshqa amaldagi hujjatlar.</p>
+  </div>
+  <div class="info-card">
+    <h3>📞 Murojaat</h3>
+    <p>Qo‘shimcha savollar uchun:<br>
+    <strong>Ishonch raqami:</strong> 1006<br>
+    <strong>Veb-sayt:</strong> kadastr.uz<br>
+    <strong>Portal:</strong> my.gov.uz</p>
+  </div>
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="switchPage('services')">
+    <span class="nav-item-icon">🏠</span>
+    <span>Xizmatlar</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('info')">
+    <span class="nav-item-icon">ℹ️</span>
+    <span>Ma'lumot</span>
+  </button>
+</nav>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-header-icon" id="modalIcon"></div>
+      <div class="modal-header-text">
+        <h2 id="modalTitle"></h2>
+        <p id="modalSubtitle"></p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// XIZMATLAR MA'LUMOTLAR BAZASI
+// ============================================================
+// Har bir xizmat uchun: nom, kategoriya, ikonka, rang, hujjatlar va boshqalar.
+// Yangi xizmat qo'shish uchun pastdagi massivga yangi obyekt qo'shing.
+
+const CATEGORIES = [
+  { id: 'all', name: 'Barchasi', icon: '📋' },
+  { id: 'huquq', name: 'Huquqni ro\'yxatga olish', icon: '📜' },
+  { id: 'kadastr', name: 'Kadastr hujjatlari', icon: '📋' },
+  { id: 'shartnoma', name: 'Shartnomalar', icon: '🤝' },
+  { id: 'malumot', name: 'Ma\'lumotnomalar', icon: '📄' },
+  { id: 'litsenziya', name: 'Litsenziyalash', icon: '🎓' }
+];
+
+const SERVICES = [
+  // ============ HUQUQNI RO'YXATGA OLISH ============
+  {
+    id: 1,
+    category: 'huquq',
+    icon: '📜',
+    color: '#dbeafe',
+    title: 'Ko‘chmas mulkka bo‘lgan huquqni davlat ro‘yxatidan o‘tkazish',
+    short: 'Yer, bino yoki inshootga egalik huquqini rasmiylashtirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Kadastr hisobiga olish uchun ariza',
+      'Huquqni tasdiqlovchi hujjat (oldi-sotdi, meros, hadya shartnomasi)',
+      'Ko‘chmas mulk obyektining texnik pasporti',
+      'Yer huquqini tasdiqlovchi hujjat (agar mavjud bo‘lsa)',
+      'Shaxsni tasdiqlovchi hujjat (pasport yoki ID-karta)'
+    ],
+    where: 'Davlat xizmatlari markazlari (DXXM), my.gov.uz portali, Kadastr agentligining tuman (shahar) bo‘limlari',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari (davlat boji)',
+    law: 'O‘zbekiston Respublikasining “Davlat kadastri to‘g‘risida”gi Qonuni; VMQ 389-son (22.06.2021)'
+  },
+  {
+    id: 2,
+    category: 'huquq',
+    icon: '🏘️',
+    color: '#dcfce7',
+    title: 'Turar joy ko‘chmas mulk obyektlariga bo‘lgan huquqni ro‘yxatdan o‘tkazish',
+    short: 'Uy-joyga egalik huquqini rasmiylashtirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Shaxsni tasdiqlovchi hujjat',
+      'ERI (elektron raqamli imzo) kaliti'
+    ],
+    where: 'my.gov.uz portali orqali elektron',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'VMQ 389-son (22.06.2021); “Davlat kadastri to‘g‘risida”gi Qonun'
+  },
+  {
+    id: 3,
+    category: 'huquq',
+    icon: '🏢',
+    color: '#fef3c7',
+    title: 'Noturar joy obyektlariga bo‘lgan huquqni ro‘yxatdan o‘tkazish',
+    short: 'Do‘kon, ofis, ombor va boshqa noturar joylar uchun',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Noturar joy obyektining kadastr pasporti',
+      'Shaxsni tasdiqlovchi hujjat',
+      'ERI kaliti'
+    ],
+    where: 'my.gov.uz portali, Kadastr agentligi tuman bo‘limi',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'VMQ 389-son (22.06.2021)'
+  },
+
+  // ============ KADASTR HUJJATLARI ============
+  {
+    id: 4,
+    category: 'kadastr',
+    icon: '📋',
+    color: '#e0e7ff',
+    title: 'Ko‘chmas mulk obyektiga kadastr pasportini berish',
+    short: 'Yer yoki bino uchun kadastr pasporti olish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Kadastr pasportini berish uchun ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Kadastr muhandisi tomonidan tayyorlangan kadastr yig‘majildi',
+      'Texnik pasport (agar qayta tayyorlanayotgan bo‘lsa)'
+    ],
+    where: 'Kadastr agentligining tuman (shahar) filiali, DXXM, my.gov.uz',
+    term: '5 ish kuni',
+    price: 'BHMning 2 baravari',
+    law: 'VMQ 389-son (22.06.2021)'
+  },
+  {
+    id: 5,
+    category: 'kadastr',
+    icon: '🏠',
+    color: '#fce7f3',
+    title: 'Turar joy obyektlariga kadastr pasportini rasmiylashtirish',
+    short: 'Uy-joy uchun kadastr pasporti',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Texnik pasport',
+      'Shaxsni tasdiqlovchi hujjat'
+    ],
+    where: 'my.gov.uz portali orqali elektron',
+    term: '5 ish kuni',
+    price: 'BHMning 2 baravari',
+    law: 'VMQ 389-son (22.06.2021)'
+  },
+  {
+    id: 6,
+    category: 'kadastr',
+    icon: '🏭',
+    color: '#fed7aa',
+    title: 'Noturar joy uchun kadastr pasportini shakllantirish',
+    short: 'Do‘kon, ofis, ombor uchun kadastr pasporti',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Texnik pasport',
+      'ERI kaliti'
+    ],
+    where: 'my.gov.uz portali',
+    term: '5 ish kuni',
+    price: 'BHMning 2 baravari',
+    law: 'VMQ 389-son (22.06.2021)'
+  },
+  {
+    id: 7,
+    category: 'kadastr',
+    icon: '📍',
+    color: '#ccfbf1',
+    title: 'Ko‘chmas mulk obyektlarining manzilini belgilash va o‘zgartirish',
+    short: 'Manzilni rasmiylashtirish yoki yangilash',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Mahalla yoki tuman hokimligining xulosasi'
+    ],
+    where: 'Kadastr agentligi tuman bo‘limi, DXXM',
+    term: '5 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 8,
+    category: 'kadastr',
+    icon: '🛰️',
+    color: '#e9d5ff',
+    title: 'Qurilishi tugallangan bino va inshootlarni foydalanishga qabul qilish',
+    short: 'Yangi qurilgan binoni rasmiy topshirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Qurilish ruxsatnomasi',
+      'Loyiha hujjatlari',
+      'Kadastr muhandisi xulosasi',
+      'Qurilish-montaj ishlari dalolatnomasi'
+    ],
+    where: 'Kadastr agentligi, Davlat xizmatlari markazlari',
+    term: '10 ish kuni',
+    price: 'BHMning 3 baravari',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+
+  // ============ SHARTNOMALAR ============
+  {
+    id: 9,
+    category: 'shartnoma',
+    icon: '🏘️',
+    color: '#dbeafe',
+    title: 'Bino va inshootlar ijara shartnomalarini ro‘yxatdan o‘tkazish',
+    short: 'Ijara shartnomasini rasmiy ro‘yxatga olish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ijara shartnomasi (2 nusxa)',
+      'Obyektga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Tomonlarning shaxsni tasdiqlovchi hujjatlari',
+      'Kadastr pasporti'
+    ],
+    where: 'Kadastr agentligi tuman bo‘limi, DXXM',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'Fuqarolik Kodeksi; “Davlat kadastri to‘g‘risida”gi Qonun'
+  },
+  {
+    id: 10,
+    category: 'shartnoma',
+    icon: '🔒',
+    color: '#fee2e2',
+    title: 'Garov va ipoteka shartnomalarini davlat ro‘yxatidan o‘tkazish',
+    short: 'Garov yoki ipoteka shartnomasini rasmiylashtirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Garov yoki ipoteka shartnomasi',
+      'Obyektga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Tomonlarning shaxsni tasdiqlovchi hujjatlari',
+      'Bank ma’lumotnomasi (ipoteka uchun)'
+    ],
+    where: 'Kadastr agentligi tuman bo‘limi, DXXM, notarial idoralar',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: '“Garov to‘g‘risida”gi Qonun; Fuqarolik Kodeksi'
+  },
+  {
+    id: 11,
+    category: 'shartnoma',
+    icon: '🤝',
+    color: '#fef3c7',
+    title: 'Servitut shartnomalarini davlat ro‘yxatidan o‘tkazish',
+    short: 'Boshqa shaxs yeridan cheklangan foydalanish huquqi',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Servitut shartnomasi',
+      'Yer uchastkasiga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Tomonlarning shaxsni tasdiqlovchi hujjatlari'
+    ],
+    where: 'Kadastr agentligi tuman bo‘limi, DXXM',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'Yer Kodeksi; Fuqarolik Kodeksi'
+  },
+  {
+    id: 12,
+    category: 'shartnoma',
+    icon: '💰',
+    color: '#dcfce7',
+    title: 'Ko‘chmas mulkni oldi-sotdi, ayirboshlash yoki hadya etish',
+    short: 'Ko‘chmas mulk bo‘yicha bitimni rasmiylashtirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Bitim shartnomasi (notarial tasdiqlangan)',
+      'Obyektga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Tomonlarning shaxsni tasdiqlovchi hujjatlari'
+    ],
+    where: 'my.gov.uz portali, notarial idoralar, DXXM',
+    term: '3 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'Fuqarolik Kodeksi; VMQ 389-son'
+  },
+
+  // ============ MA'LUMOTNOMALAR ============
+  {
+    id: 13,
+    category: 'malumot',
+    icon: '🏠',
+    color: '#e0e7ff',
+    title: 'Fuqaroning nomida turar joy mavjudligi haqida ma’lumotnoma',
+    short: 'Turar joy bor-yo‘qligi to‘g‘risida rasmiy ma’lumot',
+    forWhom: 'Jismoniy shaxslar',
+    documents: [
+      'Ariza',
+      'Shaxsni tasdiqlovchi hujjat (pasport yoki ID-karta)',
+      'Yashash joyi bo‘yicha ma’lumotnoma (agar kerak bo‘lsa)'
+    ],
+    where: 'Kadastr agentligining tuman bo‘limi, DXXM, my.gov.uz',
+    term: '1 ish kuni',
+    price: 'Bepul',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 14,
+    category: 'malumot',
+    icon: '📊',
+    color: '#fce7f3',
+    title: 'Turar joy maydoni to‘g‘risida ma’lumot berish',
+    short: 'Uy-joy maydoni haqida rasmiy ma’lumot',
+    forWhom: 'Jismoniy shaxslar',
+    documents: [
+      'Ariza',
+      'Shaxsni tasdiqlovchi hujjat',
+      'Kadastr pasporti (agar mavjud bo‘lsa)'
+    ],
+    where: 'Kadastr agentligi tuman bo‘limi, DXXM',
+    term: '1 ish kuni',
+    price: 'Bepul',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 15,
+    category: 'malumot',
+    icon: '🔍',
+    color: '#ccfbf1',
+    title: 'Ko‘chmas mulk to‘g‘risida ma’lumot olish',
+    short: 'Ko‘chmas mulk haqida umumiy ma’lumot',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Shaxsni tasdiqlovchi hujjat'
+    ],
+    where: 'Kadastr agentligi, DXXM, my.gov.uz',
+    term: '1 ish kuni',
+    price: 'BHMning 0,5 baravari',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 16,
+    category: 'malumot',
+    icon: '📜',
+    color: '#fed7aa',
+    title: 'Ko‘chmas mulk tarixi haqida ma’lumotnoma olish',
+    short: 'Obyektning o‘tmishdagi egalari va bitimlar tarixi',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Shaxsni tasdiqlovchi hujjat',
+      'Obyektning kadastr raqami'
+    ],
+    where: 'my.gov.uz portali, Kadastr agentligi',
+    term: '2 ish kuni',
+    price: 'BHMning 0,5 baravari',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 17,
+    category: 'malumot',
+    icon: '🚫',
+    color: '#fee2e2',
+    title: 'Kadastr obyektida taqiq mavjudligini tekshirish',
+    short: 'Obyektda taqiq yoki cheklov bor-yo‘qligini bilish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Obyektning kadastr raqami'
+    ],
+    where: 'my.gov.uz portali (avtomatik)',
+    term: 'Tezkor (onlayn)',
+    price: 'Bepul',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 18,
+    category: 'malumot',
+    icon: '✅',
+    color: '#dcfce7',
+    title: 'Ko‘chmas mulkning buzilmaganligi haqida ma’lumotnoma',
+    short: 'Obyekt buzilmaganligini tasdiqlovchi hujjat',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Obyektning kadastr raqami'
+    ],
+    where: 'my.gov.uz portali (avtomatik)',
+    term: 'Tezkor (onlayn)',
+    price: 'Bepul',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 19,
+    category: 'malumot',
+    icon: '📋',
+    color: '#dbeafe',
+    title: 'Ko‘chmas mulk davlat kadastr reestridan ko‘chirma tekshirish',
+    short: 'Reestr ko‘chirmasining haqiqiyligini tekshirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ko‘chirma raqami'
+    ],
+    where: 'my.gov.uz portali (avtomatik)',
+    term: 'Tezkor',
+    price: 'Bepul',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+
+  // ============ LITSENZIYALASH ============
+  {
+    id: 20,
+    category: 'litsenziya',
+    icon: '🎓',
+    color: '#e9d5ff',
+    title: 'Geodeziya va kartografiya faoliyatini litsenziyalash',
+    short: 'Geodeziya va kartografiya bilan shug‘ullanish uchun litsenziya',
+    forWhom: 'Yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Davlat ro‘yxatidan o‘tganlik guvohnomasi',
+      'Mutaxassislarning malaka sertifikatlari',
+      'Moddiy-texnik baza to‘g‘risida ma’lumot'
+    ],
+    where: 'Litsenziyalash inspeksiyasi, my.gov.uz',
+    term: '10 ish kuni',
+    price: 'BHMning 5 baravari',
+    law: '“Litsenziyalash to‘g‘risida”gi Qonun'
+  },
+  {
+    id: 21,
+    category: 'litsenziya',
+    icon: '🏗️',
+    color: '#fef3c7',
+    title: 'Bino va inshootning tashqi ko‘rinishini o‘zgartirishni kelishib olish',
+    short: 'Binoning tashqi ko‘rinishini o‘zgartirish uchun ruxsat',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Huquqni tasdiqlovchi hujjat',
+      'Loyiha taklifi',
+      'Mahalla yoki tuman hokimligi xulosasi'
+    ],
+    where: 'my.gov.uz portali, Kadastr agentligi',
+    term: '7 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'VMQ 535-son (02.09.2020)'
+  },
+  {
+    id: 22,
+    category: 'litsenziya',
+    icon: '🌾',
+    color: '#dcfce7',
+    title: 'Qishloq xo‘jaligiga mo‘ljallanmagan yerlarni xususiylashtirish',
+    short: 'Yer uchastkasini xususiy mulkka o‘tkazish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Yer uchastkasiga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Kadastr pasporti',
+      'Tuman hokimligi qarori'
+    ],
+    where: 'my.gov.uz portali, Davlat xizmatlari markazlari',
+    term: '15 ish kuni',
+    price: 'BHMning 10 baravari',
+    law: 'Yer Kodeksi; VMQ 535-son'
+  },
+  {
+    id: 23,
+    category: 'litsenziya',
+    icon: '🏘️',
+    color: '#dbeafe',
+    title: 'Ko‘p kvartirali uyga tutash yer uchastkasiga huquqni ro‘yxatdan o‘tkazish',
+    short: 'Uy-joy mulkdorlari nomiga yer uchastkasini rasmiylashtirish',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Uy-joy mulkdorlari shirkati qarori',
+      'Kadastr pasporti',
+      'Bosh plan'
+    ],
+    where: 'my.gov.uz portali',
+    term: '10 ish kuni',
+    price: 'BHMning 1 baravari',
+    law: 'VMQ 535-son'
+  },
+  {
+    id: 24,
+    category: 'litsenziya',
+    icon: '💵',
+    color: '#fce7f3',
+    title: 'Davlat mulki uchun dastlabki ijara to‘lovini hisoblash',
+    short: 'Ijara to‘lovini oldindan hisoblash',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Obyektning kadastr raqami',
+      'Obyekt maydoni to‘g‘risida ma’lumot'
+    ],
+    where: 'my.gov.uz portali (avtomatik)',
+    term: 'Tezkor',
+    price: 'Bepul',
+    law: 'VMQ 535-son'
+  },
+  {
+    id: 25,
+    category: 'litsenziya',
+    icon: '🛡️',
+    color: '#e0e7ff',
+    title: 'Mol-mulkni qo‘riqlash uchun ariza topshirish',
+    short: 'Ko‘chmas mulkni qo‘riqlash xizmatiga ariza',
+    forWhom: 'Jismoniy va yuridik shaxslar',
+    documents: [
+      'Ariza',
+      'Obyektga bo‘lgan huquqni tasdiqlovchi hujjat',
+      'Shaxsni tasdiqlovchi hujjat'
+    ],
+    where: 'my.gov.uz portali',
+    term: '3 ish kuni',
+    price: 'Bepul',
+    law: 'VMQ 535-son'
+  }
+];
+
+// ============================================================
+// RENDER QILISH
+// ============================================================
+
+let activeCategory = 'all';
+let searchQuery = '';
+
+const categoriesEl = document.getElementById('categories');
+const gridEl = document.getElementById('servicesGrid');
+const searchEl = document.getElementById('searchInput');
+const sectionTitleEl = document.getElementById('sectionTitle');
+const servicesCountEl = document.getElementById('servicesCount');
+
+// Kategoriyalarni chiqarish
+function renderCategories() {
+  categoriesEl.innerHTML = CATEGORIES.map(c => `
+    <button class="category-chip ${c.id === activeCategory ? 'active' : ''}"
+            onclick="setCategory('${c.id}')">
+      ${c.name}
+    </button>
+  `).join('');
+}
+
+function setCategory(id) {
+  activeCategory = id;
+  renderCategories();
+  renderServices();
+}
+
+// Xizmatlarni chiqarish
+function renderServices() {
+  let filtered = SERVICES;
+
+  if (activeCategory !== 'all') {
+    filtered = filtered.filter(s => s.category === activeCategory);
+  }
+
+  if (searchQuery.trim()) {
+    const q = searchQuery.toLowerCase().trim();
+    filtered = filtered.filter(s =>
+      s.title.toLowerCase().includes(q) ||
+      s.short.toLowerCase().includes(q)
+    );
+  }
+
+  const catName = CATEGORIES.find(c => c.id === activeCategory)?.name || 'Barcha xizmatlar';
+  sectionTitleEl.textContent = searchQuery ? 'Qidiruv natijalari' : catName;
+  servicesCountEl.textContent = filtered.length + ' ta';
+
+  if (filtered.length === 0) {
+    gridEl.innerHTML = `
+      <div class="empty" style="grid-column: 1/-1;">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-text">Hech narsa topilmadi</div>
+      </div>
+    `;
+    return;
+  }
+
+  gridEl.innerHTML = filtered.map(s => `
+    <button class="card" style="--accent-soft: ${s.color};" onclick="openModal(${s.id})">
+      <div class="card-icon">${s.icon}</div>
+      <div class="card-body">
+        <div class="card-title">${s.title}</div>
+        <div class="card-meta">
+          <span class="card-meta-dot"></span>
+          <span>${s.term}</span>
+        </div>
+      </div>
+    </button>
+  `).join('');
+}
+
+// Qidiruv
+searchEl.addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderServices();
+});
+
+// ============================================================
+// MODAL
+// ============================================================
+
+function openModal(id) {
+  const s = SERVICES.find(x => x.id === id);
+  if (!s) return;
+
+  document.getElementById('modalIcon').textContent = s.icon;
+  document.getElementById('modalIcon').style.background = s.color;
+  document.getElementById('modalTitle').textContent = s.title;
+  document.getElementById('modalSubtitle').textContent = s.short;
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="info-section">
+      <div class="info-label">
+        <span class="info-label-icon">👥</span>
+        Kim uchun
+      </div>
+      <div class="info-box">${s.forWhom}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">
+        <span class="info-label-icon">📄</span>
+        Kerakli hujjatlar
+      </div>
+      <ul class="doc-list">
+        ${s.documents.map((d, i) => `
+          <li>
+            <span class="doc-num">${i + 1}</span>
+            <span>${d}</span>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">
+        <span class="info-label-icon">📊</span>
+        Batafsil ma'lumot
+      </div>
+      <div class="grid-info">
+        <div class="grid-info-item">
+          <div class="label">Muddat</div>
+          <div class="value">${s.term}</div>
+        </div>
+        <div class="grid-info-item">
+          <div class="label">Narx</div>
+          <div class="value">${s.price}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">
+        <span class="info-label-icon">📍</span>
+        Qayerdan olinadi
+      </div>
+      <div class="info-box">${s.where}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">
+        <span class="info-label-icon">⚖️</span>
+        Huquqiy asos
+      </div>
+      <div class="law-box">${s.law}</div>
+    </div>
+  `;
+
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+
+// ============================================================
+// SAHIFA ALMASHTIRISH
+// ============================================================
+
+function switchPage(page) {
+  const servicesPage = document.getElementById('servicesPage');
+  const infoPage = document.getElementById('infoPage');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  if (page === 'services') {
+    servicesPage.style.display = 'block';
+    infoPage.classList.remove('active');
+    navItems[0].classList.add('active');
+    navItems[1].classList.remove('active');
+    searchEl.parentElement.parentElement.style.display = 'block';
+    categoriesEl.style.display = 'flex';
+  } else {
+    servicesPage.style.display = 'none';
+    infoPage.classList.add('active');
+    navItems[0].classList.remove('active');
+    navItems[1].classList.add('active');
+    searchEl.parentElement.parentElement.style.display = 'none';
+    categoriesEl.style.display = 'none';
+  }
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// ISHGA TUSHIRISH
+// ============================================================
+
+renderCategories();
+renderServices();
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('✅ Service Worker ishga tushdi'))
+      .catch(err => console.log('SW xatosi:', err));
+  });
+}
+</script>
+
+</body>
+</html>
